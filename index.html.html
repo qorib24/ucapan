@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sayang ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: white;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            padding: 20px;
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Page 1 - Opening */
+        #page1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .gift-box {
+            font-size: 120px;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        #page1 h1 {
+            font-size: 3em;
+            margin: 30px 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+
+        #page1 p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        /* Page 2 - Message */
+        #page2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .message-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .message-card h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .message-card p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Page 3 - Flying Photos */
+        #page3 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .flying-photos-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .flying-photo {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 5px solid white;
+            animation: flyAcross 8s linear infinite;
+        }
+
+        .flying-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes flyAcross {
+            0% {
+                transform: translateX(-250px) translateY(var(--start-y)) rotate(-15deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(50vw) translateY(var(--mid-y)) rotate(5deg) scale(1.1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 250px)) translateY(var(--end-y)) rotate(15deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        .photo-overlay {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+        }
+
+        #page3 h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+        }
+
+        #page3 p {
+            font-size: 1.3em;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        /* Page 4 - Special Message */
+        #page4 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .heart-container {
+            font-size: 100px;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        /* Page 5 - Final */
+        #page5 {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Button */
+        .btn {
+            background: white;
+            color: #333;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .btn-next {
+            margin-top: 30px;
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 15px 25px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            #page1 h1 { font-size: 2em; }
+            .message-card { padding: 25px; }
+            .message-card h2 { font-size: 1.8em; }
+            .message-card p { font-size: 1em; }
+            .gift-box { font-size: 80px; }
+            .heart-container { font-size: 60px; }
+            .flying-photo { width: 150px; height: 150px; }
+            #page3 h2 { font-size: 1.8em; }
+            #page3 p { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Opening -->
+    <div class="page active" id="page1">
+        <div class="gift-box" onclick="openGift()">🎁</div>
+        <p class="fade-in">Klik hadiah di atas!</p>
+    </div>
+
+    <!-- Page 2: First Message -->
+    <div class="page" id="page2">
+        <div class="message-card fade-in">
+            <h2>Hai Sayangku! 💕</h2>
+            <p>Hari ini adalah hari yang spesial...</p>
+            <p>Hari dimana seseorang yang sangat berarti dalam hidupku lahir ke dunia.</p>
+            <button class="btn btn-next" onclick="nextPage(3)">Lanjut 💫</button>
+        </div>
+    </div>
+
+    <!-- Page 3: Flying Photos -->
+    <div class="page" id="page3">
+        <div class="flying-photos-container" id="flyingPhotosContainer"></div>
+        <div class="photo-overlay">
+           
+            <button class="btn btn-next" onclick="nextPage(4)">Lanjut 💖</button>
+        </div>
+    </div>
+
+    <!-- Page 4: Special Message -->
+    <div class="page" id="page4">
+        <div class="message-card fade-in">
+            <div class="heart-container">❤️</div>
+            <h2>HAPPY BIRTHDAY!</h2>
+            <p>Terima kasih sudah menjadi bagian terpenting dalam hidupku.</p>
+            <p>Terima kasih untuk setiap senyuman, tawa, dan kebahagiaan yang kamu berikan.</p>
+            <p>Semoga di tahun ini, semua apa yang kamu impikan cepat terwujud.</p>
+            <p>Semoga kamu sehat selalu, bahagia, dan dikelilingi orang-orang yang menyayangimu.</p>
+            <button class="btn btn-next" onclick="nextPage(5)">Ada Lagi Nih... 🎉</button>
+        </div>
+    </div>
+
+    <!-- Page 5: Final -->
+    <div class="page" id="page5">
+        <div class="fireworks" id="fireworksContainer"></div>
+        <div class="message-card fade-in">
+            <h3>🎊 SELAMAT ULANG TAHUN! 🎊</h3>
+            <p style="font-size: 1.1em; margin: 30px 0;">💕 ARINA NURUZZEHROH 💕</p>
+            <p>Aku akan selalu ada di sampingmu, dalam suka maupun duka.</p>
+            <p>Kamu adalah alasan tersenyumku setiap hari.</p>
+            <p style="font-style: italic; margin-top: 30px; opacity: 0.9;">Semoga Allah selalu menjaga, memberkahi, dan membahagiakan hari-harimu.<br>Semoga semua impianmu terwujud, dan semoga kita selalu bersama melewati setiap fase kehidupan ini.❤️</p>
+            <button class="btn" onclick="celebrate()">🎉 RAYAKAN! 🎉</button>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        🎵 Musik: ON
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="MABRUK ALFA MABRUK _ SYAHLA [LIRIK].mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        let currentPage = 1;
+        let musicPlaying = false;
+        const music = document.getElementById('bgMusic');
+        const musicControl = document.getElementById('musicControl');
+
+        // GANTI URL FOTO DI SINI! 
+        // Anda bisa ganti dengan link foto dari Google Photos, Instagram, atau host foto online lainnya
+        const photoUrls = [
+            'foto (1).jpeg',
+            'foto (2).jpeg',
+            'foto (3).jpeg',
+            'foto (4).jpeg',
+            'foto (5).jpeg'
+            
+        ];
+
+       function openGift() {
+    // Ganti halaman ke pesan pertama
+    nextPage(2);
+    
+    // Putar musik saat hadiah diklik (user interaction -> aman)
+    const music = document.getElementById('bgMusic');
+    const musicControl = document.getElementById('musicControl');
+
+    music.play()
+        .then(() => {
+            musicPlaying = true;
+            musicControl.textContent = '🎵 Musik: ON';
+        })
+        .catch(err => {
+            console.log('Autoplay dicegah:', err);
+            musicControl.textContent = '🎵 Klik untuk musik';
+        });
+}
+
+        function nextPage(pageNumber) {
+            document.getElementById('page' + currentPage).classList.remove('active');
+            currentPage = pageNumber;
+            document.getElementById('page' + currentPage).classList.add('active');
+            
+            if (pageNumber === 3) {
+                startFlyingPhotos();
+            }
+            
+            if (pageNumber === 5) {
+                setTimeout(createFireworks, 500);
+            }
+            
+            createParticles();
+        }
+
+        function playMusic() {
+            music.play().then(() => {
+                musicPlaying = true;
+                musicControl.textContent = '🎵 Musik: ON';
+            }).catch(err => {
+                musicPlaying = false;
+                musicControl.textContent = '🎵 Klik untuk musik';
+            });
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                music.pause();
+                musicPlaying = false;
+                musicControl.textContent = '🎵 Musik: OFF';
+            } else {
+                music.play();
+                musicPlaying = true;
+                musicControl.textContent = '🎵 Musik: ON';
+            }
+        }
+
+        function startFlyingPhotos() {
+            const container = document.getElementById('flyingPhotosContainer');
+            container.innerHTML = ''; // Clear existing photos
+            
+            photoUrls.forEach((url, index) => {
+                const photo = document.createElement('div');
+                photo.className = 'flying-photo';
+                photo.innerHTML = `<img src="${url}" alt="Our Memory ${index + 1}">`;
+                
+                // Random vertical positions
+                const startY = Math.random() * 60 + 10;
+                const midY = Math.random() * 60 + 10;
+                const endY = Math.random() * 60 + 10;
+                
+                photo.style.setProperty('--start-y', startY + 'vh');
+                photo.style.setProperty('--mid-y', midY + 'vh');
+                photo.style.setProperty('--end-y', endY + 'vh');
+                
+                // Stagger the animations
+                photo.style.animationDelay = (index * 1.5) + 's';
+                
+                container.appendChild(photo);
+            });
+        }
+
+        function createParticles() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 7000);
+                }, i * 100);
+            }
+        }
+
+        function createFireworks() {
+            const colors = ['#ff6b9d', '#ffd93d', '#6bcf7f', '#4d9de0', '#e15554', '#fff'];
+            const container = document.getElementById('fireworksContainer');
+            
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    
+                    for (let j = 0; j < 20; j++) {
+                        const particle = document.createElement('div');
+                        particle.style.position = 'absolute';
+                        particle.style.width = '8px';
+                        particle.style.height = '8px';
+                        particle.style.borderRadius = '50%';
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        particle.style.left = x + 'px';
+                        particle.style.top = y + 'px';
+                        
+                        const angle = (Math.PI * 2 * j) / 20;
+                        const velocity = 2 + Math.random() * 3;
+                        const tx = Math.cos(angle) * velocity * 30;
+                        const ty = Math.sin(angle) * velocity * 30;
+                        
+                        particle.style.animation = `explode 1s ease-out forwards`;
+                        particle.style.setProperty('--tx', tx + 'px');
+                        particle.style.setProperty('--ty', ty + 'px');
+                        
+                        container.appendChild(particle);
+                        setTimeout(() => particle.remove(), 1000);
+                    }
+                }, i * 300);
+            }
+        }
+
+        function celebrate() {
+            createFireworks();
+            setTimeout(() => {
+                alert('🎉🎊 HAPPY BIRTHDAY SAYANG! 🎊🎉\n\nSemoga hari ini menjadi hari terbaik untukmu!\nAku sangat mencintaimu! 💕❤️💖');
+            }, 500);
+        }
+
+        // Add CSS animation for fireworks
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes explode {
+                0% {
+                    transform: translate(0, 0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(var(--tx), var(--ty));
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Create initial particles
+        createParticles();
+    </script>
+</body>
+</html>
